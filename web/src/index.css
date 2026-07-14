@@ -1,0 +1,92 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  color-scheme: light;
+
+  /* ── Radius scale (Shape Consistency Lock) ─────────────────────
+     controls (buttons/inputs/selects) = 8px
+     containers (cards/modals/tables/drawers) = 12px
+     pills (badges/chips) = full                                          */
+  --radius-control: 0.5rem;
+  --radius-container: 0.75rem;
+  --radius-pill: 999px;
+
+  /* ── Refined emerald accent (single accent, locked) ──────────── */
+  --accent-600: #059669;
+  --accent-700: #047857;
+  --accent-800: #065f46;
+}
+
+.dark {
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  @apply bg-zinc-50 text-zinc-900 antialiased dark:bg-zinc-950 dark:text-zinc-100;
+  font-family: "Geist Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Monospace for code, ids, and timestamps */
+code,
+kbd,
+pre,
+.font-mono {
+  font-family: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+/* Global focus ring (accessibility) */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--accent-600);
+  outline-offset: 2px;
+  border-radius: var(--radius-control);
+}
+
+/* ── Motion (MOTION_INTENSITY ~3, reduced-motion safe) ────────── */
+@keyframes modal-in {
+  from { opacity: 0; transform: translateY(8px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes drawer-in {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(0); }
+}
+@keyframes toast-in {
+  from { opacity: 0; transform: translateX(16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.animate-modal-in { animation: modal-in 0.18s cubic-bezier(0.16, 1, 0.3, 1); }
+.animate-drawer-in { animation: drawer-in 0.24s cubic-bezier(0.16, 1, 0.3, 1); }
+.animate-toast-in { animation: toast-in 0.22s cubic-bezier(0.16, 1, 0.3, 1); }
+.animate-fade-in { animation: fade-in 0.2s ease-out; }
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Hide scrollbar while keeping scroll behavior (e.g. kanban board) */
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
